@@ -1,5 +1,11 @@
 ﻿using StackExchange.Redis;
 using System.Text.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+ 
+using Microsoft.AspNetCore.Mvc;
+ 
 
 namespace week4.CacheAPI.Services
 {
@@ -7,7 +13,8 @@ namespace week4.CacheAPI.Services
     {
         private readonly IConnectionMultiplexer _redisCnn;
         private readonly IDatabase _cache;
- 
+        private TimeSpan ExpireTime => TimeSpan.FromDays(1);
+
 
         public RedisCacheService(IConnectionMultiplexer redisCnn)
         {
@@ -15,14 +22,13 @@ namespace week4.CacheAPI.Services
             _cache = redisCnn.GetDatabase();
         }
 
-        
+
 
         #region Redis String
 
-        public async Task<T> GetStringAsync<T>(string key, Func<Task<T>> action) where T : class
+        public async Task<string> GetStringAsync(string key)
         {
-            var result = await _cache.StringGetAsync(key);
-            return JsonSerializer.Deserialize<T>(result);
+            return await _cache.StringGetAsync(key);
         }
 
         public async Task<bool> SetStringAsync(string key, string value)
@@ -30,27 +36,35 @@ namespace week4.CacheAPI.Services
             return await _cache.StringSetAsync(key, value, TimeSpan.FromHours(12));
         }
 
+
+
+   
+
+
+
         #endregion
 
         #region Redis List
 
 
-        public async Task<T> GetListAsync<T>(string key, int index) where T : class
+
+
+
+
+        public async Task<string> ListRightPopAsync(string redisKey)
         {
-            var result = await _cache.ListGetByIndexAsync(key, index );
-            return JsonSerializer.Deserialize<T>(result);
+            return await _cache.ListRightPopAsync(redisKey);
         }
 
-        public  Task SetListAsync(string key, int index, string value)
+        public async Task<string> ListLeftPopAsync(string redisKey)
         {
-            return  _cache.ListSetByIndexAsync(key, index, value);
+            return await _cache.ListLeftPopAsync(redisKey);
         }
 
-
-
-
-
-
+        public async Task<long> ListLeftPushAsync(string key, string value )
+        {
+            return await _cache.ListLeftPushAsync(key, value);
+        }
         #endregion
 
         #region Redis Set
@@ -62,37 +76,60 @@ namespace week4.CacheAPI.Services
         }
 
 
-
+        public  string[] GetSetAsync(string key)
+        {
+            return _cache.SetMembers(key).ToStringArray();              
+        
+        }
         #endregion
 
         #region Redis Sorted Set
-
-
-        Random rnd = new Random(1000);
+        
+        
+        Random score = new Random(1000);
         public async Task<bool> SetSortedSetAsync(string key, string value)
         {
-            return await _cache.SortedSetAddAsync(key, value, rnd.Next());
+            return await _cache.SortedSetAddAsync(key, value, score.Next());
         }
 
 
+        public string[] GetSortedAsync(string key)
+        {
+            return _cache.SortedSetRangeByRank(key).ToStringArray();
+
+        }
 
         #endregion
+
+
+
 
         #region Redis Hash
 
-        public   Task<HashEntry[]> GetHashAsync<T>(string key, Func<Task<T>> action, HashEntry[] result) where T : class
-        {
 
-            return _cache.HashGetAllAsync(key);
+        public Dictionary<string,string> GetHashAsync(string hashMapName)
+        {
+            Dictionary<string,string> result = new Dictionary<string, string>();
+            var allHash =   _cache.HashGetAll(hashMapName);
+            foreach (var item in allHash)
+            {
+                result.Add(item.Name, item.Value);
+            }
+
+            return result;
+
         }
 
-        public async Task<bool> SetHashAsync(string key, string value)
+
+        public Task SetHashAsync(string hashMapName, string key, string value)
         {
-            return await _cache.StringSetAsync(key, value, TimeSpan.FromHours(12));
+            return  _cache.HashSetAsync(hashMapName,   key,   value);
         }
 
 
         #endregion
+
+
 
 
         public void ClearAll()
@@ -105,5 +142,11 @@ namespace week4.CacheAPI.Services
             }
         }
 
+        public async Task<bool> Clear(string key)
+        {
+           return await _cache.KeyDeleteAsync(key);
+        }
+
+      
     }
 }
