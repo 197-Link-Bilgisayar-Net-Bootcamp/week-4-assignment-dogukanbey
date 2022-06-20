@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Week4.DealerAPI", "Week4.De
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "week4.EstoreAPI", "week4.EstoreAPI\week4.EstoreAPI.csproj", "{CFD8F423-C178-4F36-A2AC-6B68F1BDCD42}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cache Project", "Cache Project", "{1079D459-94C6-40C8-9941-9DBC57E98385}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "week4.CacheAPI", "week4.CacheAPI\week4.CacheAPI.csproj", "{13DEC384-C545-445B-955C-707279709EC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +48,10 @@ Global
 		{CFD8F423-C178-4F36-A2AC-6B68F1BDCD42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFD8F423-C178-4F36-A2AC-6B68F1BDCD42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFD8F423-C178-4F36-A2AC-6B68F1BDCD42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13DEC384-C545-445B-955C-707279709EC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13DEC384-C545-445B-955C-707279709EC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13DEC384-C545-445B-955C-707279709EC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13DEC384-C545-445B-955C-707279709EC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
