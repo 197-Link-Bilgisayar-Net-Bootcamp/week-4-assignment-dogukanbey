@@ -20,14 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IJwtService, JwtService>();
-
-
-
-
  
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -36,6 +28,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             action.MigrationsAssembly("week4.Data");
         });
 });
+
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+
 
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<MapProfile>());
 

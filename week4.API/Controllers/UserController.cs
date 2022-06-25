@@ -25,7 +25,7 @@ namespace week4.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+       [Authorize]
         public async Task<IActionResult> GetUser()
         {
             return Ok(await _jwtService.GetUserByNameAsync(HttpContext.User.Identity.Name));

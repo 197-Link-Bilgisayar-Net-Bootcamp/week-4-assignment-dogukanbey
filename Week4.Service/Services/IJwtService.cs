@@ -29,5 +29,12 @@ namespace week4.Service.Services
         Task <TokenDto> CreateUserAsync(CreateUserDto createUserDto);
         Task <TokenDto> GetUserByNameAsync(string userName);
 
+ 
+        IEnumerable<Claim> GetClaims(UserApp user, List<string> audiences);
+        IEnumerable<Claim> GetClaimsByClient(Client client);
+        string CreateRefreshToken();
+   
+
+ 
     }
 }

@@ -10,17 +10,18 @@ namespace week4.API.Controllers
     {
         private readonly IJwtService _jwtService;
 
-        public AuthenticationController(JwtService jwtService)
+        public AuthenticationController(IJwtService jwtService)
         {
             _jwtService = jwtService;
         }
 
         [HttpPost]
-        public async Task<string> CreateToken(LoginDto loginDto)
+        public async Task<IActionResult> CreateToken(LoginDto loginDto)
         {
             var result = await _jwtService.CreateTokenAsync(loginDto);
 
-            return result.StatusCode;
+
+            return Ok(result);
         }
 
  

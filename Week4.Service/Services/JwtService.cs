@@ -35,12 +35,7 @@ namespace week4.Service.Services
 
 
 
-
-
-
-
-
-        public async Task<TokenDto> CreateTokenAsync(LoginDto loginDto)
+       public async Task<TokenDto> CreateTokenAsync(LoginDto loginDto)
         {
 
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -104,7 +99,7 @@ namespace week4.Service.Services
             return tokenDto;
         }
 
-        private IEnumerable<Claim> GetClaims(UserApp user , List<string> audiences)
+        public IEnumerable<Claim> GetClaims(UserApp user , List<string> audiences)
         {
             var userList = new List<Claim>
             {
@@ -118,7 +113,7 @@ namespace week4.Service.Services
             return userList;
         }
 
-        private IEnumerable<Claim> GetClaimsByClient(Client client)
+        public IEnumerable<Claim> GetClaimsByClient(Client client)
         {
             var claims = new List<Claim>();
             claims.AddRange(client.Audiences.Select(x => new Claim(JwtRegisteredClaimNames.Aud, x)));
@@ -129,7 +124,7 @@ namespace week4.Service.Services
             return claims;
         }
 
-        private string CreateRefreshToken()
+        public string CreateRefreshToken()
         {
             var numberByte = new byte[32];
 
@@ -139,7 +134,6 @@ namespace week4.Service.Services
 
             return Convert.ToBase64String(numberByte);
         }
-
 
         public async Task<TokenDto> RevokeRefreshTokenAsync(string refreshToken)
         {
@@ -166,8 +160,6 @@ namespace week4.Service.Services
 
 
         }
-
-
 
         public async Task<TokenDto> CreateTokenByRefreshTokenAsync(string refreshToken)
         {
@@ -252,9 +244,9 @@ namespace week4.Service.Services
 
         }
 
-        public async Task<TokenDto> GetUserByNameAsync(string userName)
+        public async Task<TokenDto> GetUserByNameAsync(string UserName)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(UserName);
             TokenDto tdo = new TokenDto();
             if (user == null)
             {
@@ -268,5 +260,6 @@ namespace week4.Service.Services
             tdo.StatusCode = "200";
             return tdo;
         }
+
     }
 }

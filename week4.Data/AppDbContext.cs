@@ -24,7 +24,8 @@ namespace week4.Data
         {
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new UserRefreshTokenConfiguration());
-         
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
         }
 
     }
